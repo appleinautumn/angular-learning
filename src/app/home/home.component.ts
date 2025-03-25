@@ -29,7 +29,11 @@ export class HomeComponent {
   housingLocationList: HousingLocation[] = [];
   housingService: HousingService = inject(HousingService);
 
-  constructor() {
-    this.housingLocationList = this.housingService.getAllHousingLocations();
+  async ngOnInit() {
+    try {
+      this.housingLocationList = await this.housingService.getAllHousingLocations();
+    } catch (error) {
+      console.error('Failed to fetch housing locations:', error);
+    }
   }
 }
