@@ -45,16 +45,20 @@ export class DetailsComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   housingService: HousingService = inject(HousingService);
   housingLocation: HousingLocation | undefined;
+
   applyForm = new FormGroup({
     firstName: new FormControl(''),
     lastName: new FormControl(''),
     email: new FormControl(''),
   });
 
-  constructor() {
-    const housingLocationId = Number(this.route.snapshot.params['id']);
-
-    this.housingLocation = this.housingService.getHousingLocationById(housingLocationId);
+  async ngOnInit() {
+    try {
+      const housingLocationId = Number(this.route.snapshot.params['id']);
+      this.housingLocation = await this.housingService.getHousingLocationById(housingLocationId);
+    } catch (error) {
+      console.error('Failed to load housing location:', error);
+    }
   }
 
   submitApplication() {
